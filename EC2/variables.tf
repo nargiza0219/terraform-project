@@ -33,7 +33,6 @@ variable "tags" {
 
 variable "subnet_id" {
   type        = string
-  default = ID of your subnet from your accoujnt or id from main ecc.tf
   description = "ID of the public subnet"
 }
 
@@ -46,4 +45,8 @@ variable "region" {
   type        = string
   default     = "us-east-2"
   description = "var for region"
+}
+variable "security_groups"  {
+  type = list(string)
+  
 }

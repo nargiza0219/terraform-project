@@ -6,26 +6,18 @@ resource "aws_vpc" "main_vpc" {
   }
 }
 
-resource "aws_subnet" "public_subnet1" {
+resource "aws_subnet" "public_subnet" {
   vpc_id     = aws_vpc.main_vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "${var.region}a"
 
   tags = {
-    Name = "public_subnet1"
+    Name = "public_subnet"
   }
 }
 
-resource "aws_subnet" "public_subnet2" {
-  vpc_id     = aws_vpc.main_vpc.id
-  cidr_block = "10.0.3.0/24"
-  availability_zone = "${var.region}b" 
-  tags = {
-    Name = "Public Subnet"
-  }
-}
 
-resource "aws_subnet" "private_subnet1" {
+resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.main_vpc.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = "${var.region}a"
@@ -34,15 +26,7 @@ resource "aws_subnet" "private_subnet1" {
     Name = "private subnet"
   }
 }
-resource "aws_subnet" "private_subnet2" {
-  vpc_id            = aws_vpc.main_vpc.id
-  cidr_block        = "10.0.4.0/24"
-  availability_zone = "${var.region}b"
 
-  tags = {
-    Name = "private subnet"
-  }
-}
 
 
 resource "aws_internet_gateway" "main_igw" {
@@ -66,7 +50,7 @@ resource "aws_route_table" "rt-public_subnet" {
   }
 }
 resource "aws_route_table_association" "first-association" {
-  subnet_id      = aws_subnet.public_subnet1.id
+  subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.rt-public_subnet.id
 }
 resource "aws_eip" "elastic-ip" {}
@@ -74,7 +58,7 @@ resource "aws_eip" "elastic-ip" {}
 
 resource "aws_nat_gateway" "nat-gateway" {
   allocation_id = aws_eip.elastic-ip.id
-  subnet_id    = "${aws_subnet.private_subnet1.id}"
+  subnet_id    = "${aws_subnet.private_subnet.id}"
 
   tags = {
     Name = "gw NAT"
@@ -97,7 +81,7 @@ resource "aws_route_table" "rt-private_subnet" {
   }
 }
 resource "aws_route_table_association" "third-association" {
-  subnet_id      = aws_subnet.private_subnet1.id
+  subnet_id      = aws_subnet.private_subnet.id
   route_table_id = aws_route_table.rt-private_subnet.id
 }
 
