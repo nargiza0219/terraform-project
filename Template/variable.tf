@@ -31,7 +31,9 @@ variable "tags" {
   
 # }
 
-variable "public_subnet_id" {
+
+
+variable "private_subnet_id" {
   type        = string
   description = "ID of the public subnet"
 }
@@ -51,5 +53,13 @@ variable "security_groups"  {
   
 }
 
+variable "key_pair" {
+  type = string
+  default = "deployer-key"
+}
 
-
+# variable "security_groups_2" {
+#   type = list(string)
+#   default = ["sg-0c5e8e0d5c1e3c2d1"]
+  
+# }
